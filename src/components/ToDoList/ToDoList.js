@@ -1,9 +1,9 @@
-import React from "react";
-import { ListGroup } from "react-bootstrap";
+import React, { useState } from "react";
+import { ListGroup, ListGroupItem, Button } from "react-bootstrap";
 import Task from "./Task";
 import TaskModel, { priorities } from "models/Task";
 const ToDoList = () => {
-  const list = [
+  const initList = [
     new TaskModel({
       id: 1,
       title: "Finaliser les maquettes",
@@ -26,14 +26,23 @@ const ToDoList = () => {
       priority: priorities.low,
     }),
   ];
-  const updateCompleted = (completed, task) => {
-    console.log(completed, task);
+  const [list, setList] = useState(initList);
+  const updateCompleted = (completed, task = null) => {
+    setList((list) =>
+      list.map((t) =>
+        !task || task.id === t.id ? { ...t, completed: completed } : t
+      )
+    );
   };
   return (
     <ListGroup>
       {list.map((t) => (
         <Task task={new TaskModel(t)} update={updateCompleted} key={t.id} />
       ))}
+      <ListGroupItem className="d-flex justify-content-center">
+        <Button onClick={()=>updateCompleted(false)} variant="dark" className="mr-5">Annuler tout</Button>
+        <Button onClick={()=>updateCompleted(true)} variant="dark" className="ml-5">Terminer tout</Button>
+      </ListGroupItem>
     </ListGroup>
   );
 };
