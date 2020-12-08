@@ -22,14 +22,6 @@ export default class TaskModel {
     };
     Object.assign(this, { ...defaults, ...obj });
   }
-  get priority() {
-    return this._priority;
-  }
-
-  set priority(val) {
-    if (Object.values(priorities).includes(val)) this._priority = val;
-    else this._priority = priorities.medium;
-  }
 
   getRemaining() {
     return Math.ceil(

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ListGroup, ListGroupItem, Button } from "react-bootstrap";
 import Task from "./Task";
+import NewTaskForm from "./NewTaskForm";
+
 import TaskModel, { priorities } from "models/Task";
 const ToDoList = () => {
   const initList = [
@@ -34,16 +36,40 @@ const ToDoList = () => {
       )
     );
   };
+  const addTask = (task) => {
+    setList((list) => [
+      ...list,
+      {
+        ...task,
+        id: list.reduce((prev, curr) => (curr.id > prev.id ? curr : prev)).id,
+      },
+    ]);
+  };
   return (
-    <ListGroup>
-      {list.map((t) => (
-        <Task task={new TaskModel(t)} update={updateCompleted} key={t.id} />
-      ))}
-      <ListGroupItem className="d-flex justify-content-center">
-        <Button onClick={()=>updateCompleted(false)} variant="dark" className="mr-5">Annuler tout</Button>
-        <Button onClick={()=>updateCompleted(true)} variant="dark" className="ml-5">Terminer tout</Button>
-      </ListGroupItem>
-    </ListGroup>
+    <>
+      <ListGroup>
+        {list.map((t) => (
+          <Task task={new TaskModel(t)} update={updateCompleted} key={t.id} />
+        ))}
+        <ListGroupItem className="d-flex justify-content-center">
+          <Button
+            onClick={() => updateCompleted(false)}
+            variant="dark"
+            className="mr-5"
+          >
+            Annuler tout
+          </Button>
+          <Button
+            onClick={() => updateCompleted(true)}
+            variant="dark"
+            className="ml-5"
+          >
+            Terminer tout
+          </Button>
+        </ListGroupItem>
+      </ListGroup>
+      <NewTaskForm add={addTask} />
+    </>
   );
 };
 

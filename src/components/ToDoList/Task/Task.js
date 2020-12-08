@@ -5,7 +5,7 @@ import TaskModel from "models/Task";
 
 const Task = ({ task, update }) => {
   return (
-    <ListGroupItem action variant={task.getVariant()}>
+    <ListGroupItem variant={task.getVariant()}>
       <h2 className="d-inline">{task.title}</h2>
       <Badge variant={task.getVariant()} className="float-right">
         {task.getStatus()}
