@@ -20,6 +20,12 @@ export default class TaskModel {
       deadline: new Date(new Date().setDate(new Date().getDate() + 7)),
       priority: priorities.medium,
     };
+    if (obj.created) {
+      obj.created = new Date(obj.created);
+    }
+    if (obj.deadline) {
+      obj.deadline = new Date(obj.deadline);
+    }
     Object.assign(this, { ...defaults, ...obj });
   }
 
