@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ListGroup, ListGroupItem, Button } from "react-bootstrap";
 import Task from "./Task";
 import NewTaskForm from "./NewTaskForm";
 import api from "api";
 import { arrToObj } from "utils/arrays";
-
+import { UserContext } from "context/User";
 import TaskModel from "models/Task";
 const ToDoList = () => {
+  const [user, setUser] = useContext(UserContext);
   // const initList = [
   //   new TaskModel({
   //     id: 1,
@@ -81,23 +82,33 @@ const ToDoList = () => {
         ...task,
         id:
           list.reduce((prev, curr) => (curr.id > prev.id ? curr : prev)).id + 1,
+        createdBy: user.id,
+        assignedTo: user.id,
       },
     ]);
   };
   return (
     <>
+      User ID :{" "}
+      <input
+        type="number"
+        value={user.id}
+        onChange={(e) => setUser({ id: +e.target.value })}
+      />
       <ListGroup>
         {list !== null
-          ? list.map(
-              (t) =>
-                t !== null && (
-                  <Task
-                    task={new TaskModel(t)}
-                    update={updateCompleted}
-                    key={t.id}
-                  />
-                )
-            )
+          ? list
+              .filter((t) => t.assignedTo === user.id)
+              .map(
+                (t) =>
+                  t !== null && (
+                    <Task
+                      task={new TaskModel(t)}
+                      update={updateCompleted}
+                      key={t.id}
+                    />
+                  )
+              )
           : "loading"}
         <ListGroupItem className="d-flex justify-content-center">
           <Button
