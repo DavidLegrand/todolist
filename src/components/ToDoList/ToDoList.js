@@ -41,7 +41,8 @@ const ToDoList = () => {
       ...list,
       {
         ...task,
-        id: list.reduce((prev, curr) => (curr.id > prev.id ? curr : prev)).id,
+        id:
+          list.reduce((prev, curr) => (curr.id > prev.id ? curr : prev)).id + 1,
       },
     ]);
   };
